@@ -1,0 +1,12 @@
+dist-newstyle/
+.cabal-sandbox/
+*.o
+*.hi
+*.sqlite
+alerts.db
+.vscode/
+__pycache__/
+node_modules/
+*.db
+.env
+.env.local
