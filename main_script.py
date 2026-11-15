@@ -1,4 +1,5 @@
 import requests
+import os
 import time
 import sys
 import db_manager  # This imports your database file
@@ -7,8 +8,8 @@ import db_manager  # This imports your database file
 sys.stdout.reconfigure(encoding='utf-8')
 
 # --- CONFIGURATION ---
-TELEGRAM_BOT_TOKEN = "8257741647:AAEI-kwnFo4dINkZXisKBcHunvQ0Hfjf_OM"
-TELEGRAM_CHAT_ID = "8518940489"
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 COINS = {
     "BTC": "BTC",
     "ETH": "ETH",
@@ -40,6 +41,9 @@ def get_crypto_price(symbol):
         return None
 
 def send_telegram_alert(message):
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        print("Telegram is not configured; alert delivery is disabled.")
+        return
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     payload = {
         "chat_id": TELEGRAM_CHAT_ID,
