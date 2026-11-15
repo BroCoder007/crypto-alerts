@@ -10,3 +10,9 @@ node_modules/
 *.db
 .env
 .env.local
+
+work/
+frontend/.next/
+frontend/next-env.d.ts
+frontend/*.tsbuildinfo
+crypto_data.db-*

@@ -4,13 +4,13 @@ import sqlite3
 oversold_threshold = 30
 overbought_threshold = 70
 def get_db_connection():
-    conn = sqlite3.connect('crypto_data.db')
-    # Enable WAL mode for better concurrency (API reading while Script writing)
-    conn.execute('PRAGMA journal_mode=WAL;')
-    return conn
+    # WAL is persistent and set once during initialization. Reissuing the mode
+    # change on every parallel API read can contend for the database lock.
+    return sqlite3.connect('crypto_data.db', timeout=8)
 
 def init_db():
     conn = get_db_connection()
+    conn.execute('PRAGMA journal_mode=WAL;')
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS prices (
